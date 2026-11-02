@@ -1,0 +1,6 @@
+@baseUrl = https://localhost:7042
+
+GET {{baseUrl}}/api/buildings
+Accept: text/plain
+
+###

@@ -1,0 +1,13 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+# JetBrains Rider
+.idea/
+
+# macOS
+.DS_Store
+
+# Local environment secrets
+.env
