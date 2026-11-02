@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartBuildingControlCenter.Api.Models;
+
 namespace SmartBuildingControlCenter.Api.Controllers;
 
 [ApiController]
@@ -6,8 +8,15 @@ namespace SmartBuildingControlCenter.Api.Controllers;
 public class BuildingsController : ControllerBase
 {
     [HttpGet]
-    public string Get()
+    public List<Building> Get()
     {
-        return "Smart Building Control Center API is running";
+        List<Building> buildings = new ();
+        buildings.Add(new Building
+            {
+                Name = "Tech Tower",
+                FloorCount = 3,
+                IsOccupied = true
+            });
+        return buildings;
     }
 }
