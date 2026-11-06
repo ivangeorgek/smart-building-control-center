@@ -61,6 +61,12 @@ public class BuildingDataService
         return rooms;
     }
 
+    public Room? GetRoomByNumber(int number)
+    {
+        var rooms = GetRooms();
+        return rooms.FirstOrDefault(room => room.Number == number);
+    }
+
     private void AddRoomsToFloor(Floor floor, int startRoomNumber, int endRoomNumber)
     {
         for (int roomNumber = startRoomNumber;

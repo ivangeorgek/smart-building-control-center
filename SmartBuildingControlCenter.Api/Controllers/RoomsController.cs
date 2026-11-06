@@ -20,4 +20,16 @@ public class RoomsController : ControllerBase
     {
         return _buildingDataService.GetRooms();
     }
+
+    [HttpGet("{number:int}")]
+    public ActionResult<Room> GetByNumber(int number)
+    {
+        var room = _buildingDataService.GetRoomByNumber(number);
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        return room;
+    }
 }
