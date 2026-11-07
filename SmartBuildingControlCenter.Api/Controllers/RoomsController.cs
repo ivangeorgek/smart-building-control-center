@@ -32,4 +32,10 @@ public class RoomsController : ControllerBase
 
         return room;
     }
+
+    [HttpPut("{number:int}/occupancy")]
+    public IActionResult SetOccupancy(int number, [FromBody] bool isOccupied)
+        => _buildingDataService.SetRoomOccupancy(number, isOccupied)
+            ? NoContent()
+            : NotFound();
 }

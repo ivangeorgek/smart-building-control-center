@@ -4,7 +4,55 @@ namespace SmartBuildingControlCenter.Api.Services;
 
 public class BuildingDataService
 {
+    private readonly List<Building> _buildings;
+
+    public BuildingDataService()
+    {
+        _buildings = CreateInitialBuildings();
+    }
+
     public List<Building> GetBuildings()
+    {
+        return _buildings;
+    }
+
+    public List<Room> GetRooms()
+    {
+        var rooms = new List<Room>();
+        var buildings = GetBuildings();
+        foreach (var building in buildings)
+        {
+            foreach (var floor in building.Floors)
+            {
+                foreach (var room in floor.Rooms)
+                {
+                    rooms.Add(room);
+                }
+            }
+        }
+
+        return rooms;
+    }
+
+    public Room? GetRoomByNumber(int number)
+    {
+        var rooms = GetRooms();
+        return rooms.FirstOrDefault(room => room.Number == number);
+    }
+
+    public bool SetRoomOccupancy(int roomNumber, bool isOccupied)
+    {
+        var room = GetRoomByNumber(roomNumber);
+        if (room == null)
+        {
+            return false;
+        }
+
+        room.IsOccupied = isOccupied;
+        return true;
+    }
+
+    private List<Building> CreateInitialBuildings()
     {
         List<Building> buildings = new();
 
@@ -41,30 +89,6 @@ public class BuildingDataService
 
         buildings.Add(techTowerBuilding);
         return buildings;
-    }
-
-    public List<Room> GetRooms()
-    {
-        var rooms = new List<Room>();
-        var buildings = GetBuildings();
-        foreach (var building in buildings)
-        {
-            foreach (var floor in building.Floors)
-            {
-                foreach (var room in floor.Rooms)
-                {
-                    rooms.Add(room);
-                }
-            }
-        }
-
-        return rooms;
-    }
-
-    public Room? GetRoomByNumber(int number)
-    {
-        var rooms = GetRooms();
-        return rooms.FirstOrDefault(room => room.Number == number);
     }
 
     private void AddRoomsToFloor(Floor floor, int startRoomNumber, int endRoomNumber)

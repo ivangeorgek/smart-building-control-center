@@ -1,6 +1,21 @@
 @baseUrl = https://localhost:7042
 
+### Get all buildings
 GET {{baseUrl}}/api/buildings
-Accept: text/plain
+Accept: application/json
 
-###
+### Update Room 102 occupancy
+PUT {{baseUrl}}/api/rooms/102/occupancy
+Content-Type: application/json
+
+false
+
+### Verify Room 102 occupancy
+GET {{baseUrl}}/api/rooms/102
+Accept: application/json
+
+### Try updating a room that doesn't exist
+PUT {{baseUrl}}/api/rooms/999/occupancy
+Content-Type: application/json
+
+true
