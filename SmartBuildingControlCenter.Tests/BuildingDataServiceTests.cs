@@ -56,4 +56,38 @@ public class BuildingDataServiceTests
 
         Assert.False(result);
     }
+
+    [Theory]
+    [InlineData(101, "Meeting Room")]
+    [InlineData(102, "Open Office")]
+    [InlineData(304, "Room 304")]
+    public void GetRoomByNumber_ShouldReturnExpectedName(
+        int roomNumber,
+        string expectedName)
+    {
+        var service = new BuildingDataService();
+
+        var room = service.GetRoomByNumber(roomNumber);
+
+        Assert.NotNull(room);
+        Assert.Equal(expectedName, room.Name);
+    }
+
+    [Theory]
+    [InlineData(102, false)]
+    [InlineData(101, true)]
+    public void SetRoomOccupancy_ShouldSetExpectedOccupancy(
+        int roomNumber,
+        bool expectedOccupancy)
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(roomNumber, expectedOccupancy);
+        var room = service.GetRoomByNumber(roomNumber);
+
+        Assert.True(result);
+        Assert.NotNull(room);
+        Assert.Equal(roomNumber, room.Number);
+        Assert.Equal(expectedOccupancy, room.IsOccupied);
+    }
 }
