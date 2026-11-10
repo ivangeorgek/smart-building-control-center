@@ -131,4 +131,38 @@ public class BuildingDataServiceTests
         Assert.False(isNonExistingRoomOccupancySet);
         Assert.True(existingRoom.IsOccupied);
     }
+
+    [Fact]
+    public void GetOccupiedRoomCount_ShouldReturnOneInitially()
+    {
+        var service = new BuildingDataService();
+
+        var count = service.GetOccupiedRoomCount();
+
+        Assert.Equal(1, count);
+    }
+
+    [Fact]
+    public void GetOccupiedRoomCount_ShouldIncreaseWhenRoomBecomesOccupied()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(101, true);
+        Assert.True(result);
+        var count = service.GetOccupiedRoomCount();
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public void GetOccupiedRoomCount_ShouldDecreaseWhenRoomBecomesUnoccupied()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(102, false);
+        Assert.True(result);
+        var count = service.GetOccupiedRoomCount();
+
+        Assert.Equal(0, count);
+    }
 }

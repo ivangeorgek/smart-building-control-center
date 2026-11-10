@@ -105,4 +105,10 @@ public class BuildingDataService
             floor.Rooms.Add(newRoom);
         }
     }
+
+    public int GetOccupiedRoomCount()
+    {
+        var rooms = GetRooms();
+        return rooms.Count(room => room.IsOccupied);
+    }
 }
