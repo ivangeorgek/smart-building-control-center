@@ -90,4 +90,45 @@ public class BuildingDataServiceTests
         Assert.Equal(roomNumber, room.Number);
         Assert.Equal(expectedOccupancy, room.IsOccupied);
     }
+
+    [Fact]
+    public void SetRoomOccupancy_ShouldNotAffectOtherRooms()
+    {
+        var service = new BuildingDataService();
+
+        var meetingRoom = service.GetRoomByNumber(101);
+        Assert.NotNull(meetingRoom);
+        var isMeetingRoomOccupancySet = service.SetRoomOccupancy(101, true);
+
+        var openOfficeRoom = service.GetRoomByNumber(102);
+        Assert.NotNull(openOfficeRoom);
+        var isOpenOfficeRoomOccupancySet = service.SetRoomOccupancy(102, false);
+
+        Assert.True(isMeetingRoomOccupancySet);
+        Assert.True(isOpenOfficeRoomOccupancySet);
+
+        Assert.Equal(101, meetingRoom.Number);
+        Assert.Equal(102, openOfficeRoom.Number);
+
+        Assert.True(meetingRoom.IsOccupied);
+        Assert.False(openOfficeRoom.IsOccupied);
+    }
+
+    [Fact]
+    public void SetRoomOccupancy_ShouldNotModifyExistingRooms_WhenRoomDoesNotExist()
+    {
+        // Arrange
+        var service = new BuildingDataService();
+
+        var existingRoom = service.GetRoomByNumber(102);
+        Assert.NotNull(existingRoom);
+        Assert.True(existingRoom.IsOccupied);
+
+        // Act
+        var isNonExistingRoomOccupancySet = service.SetRoomOccupancy(999, false);
+
+        // Assert
+        Assert.False(isNonExistingRoomOccupancySet);
+        Assert.True(existingRoom.IsOccupied);
+    }
 }
