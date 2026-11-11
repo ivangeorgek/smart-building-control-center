@@ -35,7 +35,15 @@ public class RoomsController : ControllerBase
 
     [HttpPut("{number:int}/occupancy")]
     public IActionResult SetOccupancy(int number, [FromBody] bool isOccupied)
-        => _buildingDataService.SetRoomOccupancy(number, isOccupied)
+    {
+        return _buildingDataService.SetRoomOccupancy(number, isOccupied)
             ? NoContent()
             : NotFound();
+    }
+
+    [HttpGet("occupied-count")]
+    public ActionResult<int> GetOccupiedRoomCount()
+    {
+        return _buildingDataService.GetOccupiedRoomCount();
+    }
 }

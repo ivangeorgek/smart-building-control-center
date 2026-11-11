@@ -19,3 +19,17 @@ PUT {{baseUrl}}/api/rooms/999/occupancy
 Content-Type: application/json
 
 true
+
+### Get the occupied room count
+GET {{baseUrl}}/api/rooms/occupied-count
+Accept: application/json
+
+### Set Room 101 to occupied
+PUT {{baseUrl}}/api/rooms/101/occupancy
+Content-Type: application/json
+
+true
+
+### Get updated occupied room count
+GET {{baseUrl}}/api/rooms/occupied-count
+Accept: application/json
