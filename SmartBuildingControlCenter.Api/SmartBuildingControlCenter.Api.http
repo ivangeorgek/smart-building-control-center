@@ -33,3 +33,27 @@ true
 ### Get updated occupied room count
 GET {{baseUrl}}/api/rooms/occupied-count
 Accept: application/json
+
+### Get occupancy percentage
+GET {{baseUrl}}/api/rooms/occupancy-percentage
+Accept: application/json
+
+### Set Room 101 to occupied
+PUT {{baseUrl}}/api/rooms/101/occupancy
+Content-Type: application/json
+
+true
+
+### Check occupancy percentage
+GET {{baseUrl}}/api/rooms/occupancy-percentage
+Accept: application/json
+
+### Set Room 102 to unoccupied
+PUT {{baseUrl}}/api/rooms/102/occupancy
+Content-Type: application/json
+
+false
+
+### Check occupancy percentage again
+GET {{baseUrl}}/api/rooms/occupancy-percentage
+Accept: application/json

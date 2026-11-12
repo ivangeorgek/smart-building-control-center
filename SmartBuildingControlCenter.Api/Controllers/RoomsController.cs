@@ -46,4 +46,10 @@ public class RoomsController : ControllerBase
     {
         return _buildingDataService.GetOccupiedRoomCount();
     }
+
+    [HttpGet("occupancy-percentage")]
+    public ActionResult<double> GetOccupancyPercentage()
+    {
+        return _buildingDataService.GetOccupancyPercentage();
+    }
 }
