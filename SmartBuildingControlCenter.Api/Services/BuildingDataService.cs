@@ -111,4 +111,13 @@ public class BuildingDataService
         var rooms = GetRooms();
         return rooms.Count(room => room.IsOccupied);
     }
+
+    public double GetOccupancyPercentage()
+    {
+        var totalRoomCount = GetRooms().Count;
+        var occupiedRoomCount = GetOccupiedRoomCount();
+        if (totalRoomCount == 0)
+            return 0;
+        return (double)occupiedRoomCount / totalRoomCount * 100;
+    }
 }

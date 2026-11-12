@@ -165,4 +165,38 @@ public class BuildingDataServiceTests
 
         Assert.Equal(0, count);
     }
+
+    [Fact]
+    public void GetOccupancyPercentage_ShouldReturnExpectedPercentageInitially()
+    {
+        var service = new BuildingDataService();
+
+        var percentage = service.GetOccupancyPercentage();
+
+        Assert.Equal(8.33, percentage, 2);
+    }
+
+    [Fact]
+    public void GetOccupancyPercentage_ShouldIncreaseWhenRoomBecomesOccupied()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(101, true);
+        Assert.True(result);
+        var percentage = service.GetOccupancyPercentage();
+
+        Assert.Equal(16.67, percentage, 2);
+    }
+
+    [Fact]
+    public void GetOccupancyPercentage_ShouldDecreaseWhenRoomBecomesUnoccupied()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(102, false);
+        Assert.True(result);
+        var percentage = service.GetOccupancyPercentage();
+
+        Assert.Equal(0, percentage);
+    }
 }
