@@ -1,4 +1,5 @@
-﻿using SmartBuildingControlCenter.Api.Services;
+﻿using SmartBuildingControlCenter.Api.Models;
+using SmartBuildingControlCenter.Api.Services;
 using Xunit;
 
 namespace SmartBuildingControlCenter.Tests;
@@ -198,5 +199,33 @@ public class BuildingDataServiceTests
         var percentage = service.GetOccupancyPercentage();
 
         Assert.Equal(0, percentage);
+    }
+
+    [Fact]
+    public void GetBuildingStatistics_ShouldReturnCorrectInitialStatistics()
+    {
+        var service = new BuildingDataService();
+
+        BuildingStatistics statistics = service.GetBuildingStatistics();
+
+        Assert.Equal(12, statistics.TotalRooms);
+        Assert.Equal(1, statistics.OccupiedRooms);
+        Assert.Equal(11, statistics.UnoccupiedRooms);
+        Assert.Equal(8.33, statistics.OccupancyPercentage, 2);
+    }
+
+    [Fact]
+    public void GetBuildingStatistics_ShouldUpdateWhenRoomOccupancyChanges()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.SetRoomOccupancy(101, true);
+        Assert.True(result);
+        BuildingStatistics statistics = service.GetBuildingStatistics();
+
+        Assert.Equal(12, statistics.TotalRooms);
+        Assert.Equal(2, statistics.OccupiedRooms);
+        Assert.Equal(10, statistics.UnoccupiedRooms);
+        Assert.Equal(16.67, statistics.OccupancyPercentage, 2);
     }
 }

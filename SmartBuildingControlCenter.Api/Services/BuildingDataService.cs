@@ -120,4 +120,18 @@ public class BuildingDataService
             return 0;
         return (double)occupiedRoomCount / totalRoomCount * 100;
     }
+
+    public BuildingStatistics GetBuildingStatistics()
+    {
+        var totalRooms = GetRooms().Count;
+        var occupiedRooms = GetOccupiedRoomCount();
+
+        return new BuildingStatistics
+        {
+            TotalRooms = totalRooms,
+            OccupiedRooms = occupiedRooms,
+            UnoccupiedRooms = totalRooms - occupiedRooms,
+            OccupancyPercentage = GetOccupancyPercentage()
+        };
+    }
 }
