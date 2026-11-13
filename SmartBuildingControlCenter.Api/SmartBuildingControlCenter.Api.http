@@ -71,3 +71,15 @@ true
 ### Get updated building statistics
 GET {{baseUrl}}/api/buildings/statistics
 Accept: application/json
+
+### Get occupied room count for Floor 1
+GET {{baseUrl}}/api/floors/1/occupied-count
+Accept: application/json
+
+### Get occupied room count for Floor 2
+GET {{baseUrl}}/api/floors/2/occupied-count
+Accept: application/json
+
+### Get occupied room count for nonexistent Floor 999
+GET {{baseUrl}}/api/floors/999/occupied-count
+Accept: application/json
