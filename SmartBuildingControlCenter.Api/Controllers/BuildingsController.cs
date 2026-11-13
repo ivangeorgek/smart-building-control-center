@@ -20,4 +20,10 @@ public class BuildingsController : ControllerBase
     {
         return _buildingDataService.GetBuildings();
     }
+
+    [HttpGet("statistics")]
+    public ActionResult<BuildingStatistics> GetStatistics()
+    {
+        return _buildingDataService.GetBuildingStatistics();
+    }
 }

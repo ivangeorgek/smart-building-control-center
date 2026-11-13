@@ -57,3 +57,17 @@ false
 ### Check occupancy percentage again
 GET {{baseUrl}}/api/rooms/occupancy-percentage
 Accept: application/json
+
+### Check building statistics
+GET {{baseUrl}}/api/buildings/statistics
+Accept: application/json
+
+### Set Room 101 to occupied
+PUT {{baseUrl}}/api/rooms/101/occupancy
+Content-Type: application/json
+
+true
+
+### Get updated building statistics
+GET {{baseUrl}}/api/buildings/statistics
+Accept: application/json
