@@ -135,11 +135,11 @@ public class BuildingDataService
         };
     }
 
-    public int GetOccupiedRoomCountByFloor(int floorNumber)
+    public int? GetOccupiedRoomCountByFloor(int floorNumber)
     {
         var floor = _buildings
             .SelectMany(building => building.Floors)
             .FirstOrDefault(floor => floor.Number == floorNumber);
-        return floor == null ? 0 : floor.Rooms.Count(room => room.IsOccupied);
+        return floor?.Rooms.Count(room => room.IsOccupied);
     }
 }

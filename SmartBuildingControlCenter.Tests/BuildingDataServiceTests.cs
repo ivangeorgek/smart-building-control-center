@@ -233,7 +233,6 @@ public class BuildingDataServiceTests
     [InlineData(1, 1)]
     [InlineData(2, 0)]
     [InlineData(3, 0)]
-    [InlineData(999, 0)]
     public void GetOccupiedRoomCountByFloor_ShouldReturnExpectedCount(
         int floorNumber,
         int expectedCount)
@@ -261,5 +260,18 @@ public class BuildingDataServiceTests
 
         var result = service.GetOccupiedRoomCountByFloor(1);
         Assert.Equal(2, result);
+    }
+
+    [Fact]
+    public void GetOccupiedRoomCountByFloor_ShouldReturnNull_WhenFloorDoesNotExist()
+    {
+        // Arrange
+        var service = new BuildingDataService();
+
+        // Act
+        var result = service.GetOccupiedRoomCountByFloor(999);
+
+        // Assert
+        Assert.Null(result);
     }
 }
