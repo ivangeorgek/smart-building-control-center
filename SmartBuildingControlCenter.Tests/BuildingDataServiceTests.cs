@@ -274,4 +274,47 @@ public class BuildingDataServiceTests
         // Assert
         Assert.Null(result);
     }
+
+    [Fact]
+    public void GetFloorStatistics_ShouldReturnCorrectStatisticsForFloor1()
+    {
+        // Arrange
+        var service = new BuildingDataService();
+
+        // Act
+        var result = service.GetFloorStatistics(1);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.FloorNumber);
+        Assert.Equal(4, result.TotalRooms);
+        Assert.Equal(1, result.OccupiedRooms);
+        Assert.Equal(3, result.UnoccupiedRooms);
+        Assert.Equal(25, result.OccupancyPercentage);
+    }
+
+    [Fact]
+    public void GetFloorStatistics_ShouldReturnCorrectStatisticsForFloor2()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.GetFloorStatistics(2);
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result.FloorNumber);
+        Assert.Equal(4, result.TotalRooms);
+        Assert.Equal(0, result.OccupiedRooms);
+        Assert.Equal(4, result.UnoccupiedRooms);
+        Assert.Equal(0, result.OccupancyPercentage);
+    }
+
+    [Fact]
+    public void GetFloorStatistics_ShouldReturnNull_WhenFloorDoesNotExist()
+    {
+        var service = new BuildingDataService();
+
+        var result = service.GetFloorStatistics(999);
+
+        Assert.Null(result);
+    }
 }

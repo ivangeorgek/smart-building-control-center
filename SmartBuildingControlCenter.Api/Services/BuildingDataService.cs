@@ -142,4 +142,36 @@ public class BuildingDataService
             .FirstOrDefault(floor => floor.Number == floorNumber);
         return floor?.Rooms.Count(room => room.IsOccupied);
     }
+
+    public FloorStatistics? GetFloorStatistics(int floorNumber)
+    {
+        var floor = _buildings
+            .SelectMany(building => building.Floors)
+            .FirstOrDefault(floor => floor.Number == floorNumber);
+
+        if (floor == null)
+            return null;
+
+        var totalRooms = floor.Rooms.Count;
+        var occupiedRooms = floor.Rooms.Count(room => room.IsOccupied);
+
+        double occupancyPercentage;
+        if (totalRooms == 0)
+        {
+            occupancyPercentage = 0;
+        }
+        else
+        {
+            occupancyPercentage = (double)occupiedRooms / totalRooms * 100;
+        }
+
+        return new FloorStatistics()
+        {
+            FloorNumber = floor.Number,
+            TotalRooms = totalRooms,
+            OccupiedRooms = occupiedRooms,
+            UnoccupiedRooms = totalRooms - occupiedRooms,
+            OccupancyPercentage = occupancyPercentage
+        };
+    }
 }
