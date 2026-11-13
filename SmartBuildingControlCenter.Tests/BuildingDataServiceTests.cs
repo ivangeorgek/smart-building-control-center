@@ -228,4 +228,38 @@ public class BuildingDataServiceTests
         Assert.Equal(10, statistics.UnoccupiedRooms);
         Assert.Equal(16.67, statistics.OccupancyPercentage, 2);
     }
+
+    [Theory]
+    [InlineData(1, 1)]
+    [InlineData(2, 0)]
+    [InlineData(3, 0)]
+    [InlineData(999, 0)]
+    public void GetOccupiedRoomCountByFloor_ShouldReturnExpectedCount(
+        int floorNumber,
+        int expectedCount)
+    {
+        // Arrange
+        var service = new BuildingDataService();
+
+        // Act
+        var result = service.GetOccupiedRoomCountByFloor(floorNumber);
+
+        // Assert
+        Assert.Equal(expectedCount, result);
+    }
+
+    [Fact]
+    public void GetOccupiedRoomCountByFloor_ShouldUpdateWhenRoomOccupancyChanges()
+    {
+        var service = new BuildingDataService();
+
+        var count = service.GetOccupiedRoomCountByFloor(1);
+        Assert.Equal(1, count);
+
+        var setOccupancy = service.SetRoomOccupancy(101, true);
+        Assert.True(setOccupancy);
+
+        var result = service.GetOccupiedRoomCountByFloor(1);
+        Assert.Equal(2, result);
+    }
 }

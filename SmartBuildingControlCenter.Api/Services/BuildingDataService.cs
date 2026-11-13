@@ -11,6 +11,45 @@ public class BuildingDataService
         _buildings = CreateInitialBuildings();
     }
 
+    private List<Building> CreateInitialBuildings()
+    {
+        List<Building> buildings = new();
+
+        var techTowerBuilding = new Building
+        {
+            Name = "Tech Tower",
+            IsOccupied = true,
+        };
+
+        techTowerBuilding.Floors.Add(new Floor { Number = 1, Name = "First Floor" });
+        techTowerBuilding.Floors.Add(new Floor { Number = 2, Name = "Second Floor" });
+        techTowerBuilding.Floors.Add(new Floor { Number = 3, Name = "Third Floor" });
+
+        var firstFloor = techTowerBuilding.Floors[0];
+        var secondFloor = techTowerBuilding.Floors[1];
+        var thirdFloor = techTowerBuilding.Floors[2];
+
+        firstFloor.Rooms.Add(new Room
+        {
+            Number = 101,
+            Name = "Meeting Room",
+            IsOccupied = false
+        });
+        firstFloor.Rooms.Add(new Room
+        {
+            Number = 102,
+            Name = "Open Office",
+            IsOccupied = true
+        });
+
+        AddRoomsToFloor(firstFloor, 103, 104);
+        AddRoomsToFloor(secondFloor, 201, 204);
+        AddRoomsToFloor(thirdFloor, 301, 304);
+
+        buildings.Add(techTowerBuilding);
+        return buildings;
+    }
+
     public List<Building> GetBuildings()
     {
         return _buildings;
@@ -50,45 +89,6 @@ public class BuildingDataService
 
         room.IsOccupied = isOccupied;
         return true;
-    }
-
-    private List<Building> CreateInitialBuildings()
-    {
-        List<Building> buildings = new();
-
-        var techTowerBuilding = new Building
-        {
-            Name = "Tech Tower",
-            IsOccupied = true,
-        };
-
-        techTowerBuilding.Floors.Add(new Floor { Number = 1, Name = "First Floor" });
-        techTowerBuilding.Floors.Add(new Floor { Number = 2, Name = "Second Floor" });
-        techTowerBuilding.Floors.Add(new Floor { Number = 3, Name = "Third Floor" });
-
-        var firstFloor = techTowerBuilding.Floors[0];
-        var secondFloor = techTowerBuilding.Floors[1];
-        var thirdFloor = techTowerBuilding.Floors[2];
-
-        firstFloor.Rooms.Add(new Room
-        {
-            Number = 101,
-            Name = "Meeting Room",
-            IsOccupied = false
-        });
-        firstFloor.Rooms.Add(new Room
-        {
-            Number = 102,
-            Name = "Open Office",
-            IsOccupied = true
-        });
-
-        AddRoomsToFloor(firstFloor, 103, 104);
-        AddRoomsToFloor(secondFloor, 201, 204);
-        AddRoomsToFloor(thirdFloor, 301, 304);
-
-        buildings.Add(techTowerBuilding);
-        return buildings;
     }
 
     private void AddRoomsToFloor(Floor floor, int startRoomNumber, int endRoomNumber)
@@ -133,5 +133,13 @@ public class BuildingDataService
             UnoccupiedRooms = totalRooms - occupiedRooms,
             OccupancyPercentage = GetOccupancyPercentage()
         };
+    }
+
+    public int GetOccupiedRoomCountByFloor(int floorNumber)
+    {
+        var floor = _buildings
+            .SelectMany(building => building.Floors)
+            .FirstOrDefault(floor => floor.Number == floorNumber);
+        return floor == null ? 0 : floor.Rooms.Count(room => room.IsOccupied);
     }
 }
