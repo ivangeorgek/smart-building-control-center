@@ -83,3 +83,11 @@ Accept: application/json
 ### Get occupied room count for nonexistent Floor 999
 GET {{baseUrl}}/api/floors/999/occupied-count
 Accept: application/json
+
+### Get Floor 1 statistics
+GET {{baseUrl}}/api/floors/1/statistics
+Accept: application/json
+
+### Get nonexistent Floor 999 statistics
+GET {{baseUrl}}/api/floors/999/statistics
+Accept: application/json
