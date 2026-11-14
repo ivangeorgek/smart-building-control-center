@@ -106,6 +106,13 @@ public class BuildingDataService
         }
     }
 
+    private double CalculateOccupancyPercentage(int occupied, int total)
+    {
+        if (total == 0)
+            return 0;
+        return (double)occupied / total * 100;
+    }
+
     public int GetOccupiedRoomCount()
     {
         var rooms = GetRooms();
@@ -116,9 +123,7 @@ public class BuildingDataService
     {
         var totalRoomCount = GetRooms().Count;
         var occupiedRoomCount = GetOccupiedRoomCount();
-        if (totalRoomCount == 0)
-            return 0;
-        return (double)occupiedRoomCount / totalRoomCount * 100;
+        return CalculateOccupancyPercentage(occupiedRoomCount, totalRoomCount);
     }
 
     public BuildingStatistics GetBuildingStatistics()
@@ -155,15 +160,7 @@ public class BuildingDataService
         var totalRooms = floor.Rooms.Count;
         var occupiedRooms = floor.Rooms.Count(room => room.IsOccupied);
 
-        double occupancyPercentage;
-        if (totalRooms == 0)
-        {
-            occupancyPercentage = 0;
-        }
-        else
-        {
-            occupancyPercentage = (double)occupiedRooms / totalRooms * 100;
-        }
+        var occupancyPercentage = CalculateOccupancyPercentage(occupiedRooms, totalRooms);
 
         return new FloorStatistics()
         {
