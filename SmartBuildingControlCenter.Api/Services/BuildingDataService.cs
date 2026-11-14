@@ -140,19 +140,22 @@ public class BuildingDataService
         };
     }
 
-    public int? GetOccupiedRoomCountByFloor(int floorNumber)
+    private Floor? GetFloorByNumber(int floorNumber)
     {
-        var floor = _buildings
+        return _buildings
             .SelectMany(building => building.Floors)
             .FirstOrDefault(floor => floor.Number == floorNumber);
+    }
+
+    public int? GetOccupiedRoomCountByFloor(int floorNumber)
+    {
+        var floor = GetFloorByNumber(floorNumber);
         return floor?.Rooms.Count(room => room.IsOccupied);
     }
 
     public FloorStatistics? GetFloorStatistics(int floorNumber)
     {
-        var floor = _buildings
-            .SelectMany(building => building.Floors)
-            .FirstOrDefault(floor => floor.Number == floorNumber);
+        var floor = GetFloorByNumber(floorNumber);
 
         if (floor == null)
             return null;
