@@ -29,4 +29,21 @@ public class RoomsApiIntegrationTests
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
+
+    [Fact]
+    public async Task SetRoomOccupancy_ShouldUpdateOccupiedRoomCount()
+    {
+        await using var factory = new WebApplicationFactory<Program>();
+        using var client = factory.CreateClient();
+
+        var putResponse = await client.PutAsJsonAsync("/api/rooms/101/occupancy", true);
+
+        Assert.Equal(HttpStatusCode.NoContent, putResponse.StatusCode);
+
+        var getResponse = await client.GetAsync("/api/rooms/occupied-count");
+
+        Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+        var result = await getResponse.Content.ReadFromJsonAsync<int>();
+        Assert.Equal(2, result);
+    }
 }
