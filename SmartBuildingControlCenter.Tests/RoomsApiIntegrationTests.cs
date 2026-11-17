@@ -46,4 +46,25 @@ public class RoomsApiIntegrationTests
         var result = await getResponse.Content.ReadFromJsonAsync<int>();
         Assert.Equal(2, result);
     }
+
+    [Fact]
+    public async Task SetRoomOccupancy_ShouldNotChangeState_WhenRoomDoesNotExist()
+    {
+        await using var factory = new WebApplicationFactory<Program>();
+        using var client = factory.CreateClient();
+
+        var beforeResponse = await client.GetAsync("/api/rooms/occupied-count");
+        Assert.Equal(HttpStatusCode.OK, beforeResponse.StatusCode);
+        var countBefore = await beforeResponse.Content.ReadFromJsonAsync<int>();
+
+        // 404 for Non-existing room's occupancy update
+        var putResponse = await client.PutAsJsonAsync("/api/rooms/999/occupancy", true);
+        Assert.Equal(HttpStatusCode.NotFound, putResponse.StatusCode);
+
+        // Room occupancy count shouldn't change
+        var afterResponse = await client.GetAsync("/api/rooms/occupied-count");
+        Assert.Equal(HttpStatusCode.OK, afterResponse.StatusCode);
+        var countAfter = await afterResponse.Content.ReadFromJsonAsync<int>();
+        Assert.Equal(countBefore, countAfter);
+    }
 }
